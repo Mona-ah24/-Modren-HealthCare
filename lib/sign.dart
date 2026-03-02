@@ -23,10 +23,12 @@ class _SignState extends State<Sign> {
     _formKey.currentState?.save();
   }
 
-  @override
+  double get screenWidth => MediaQuery.of(context).size.width;
+  double get screenHeight => MediaQuery.of(context).size.height;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset:true,
       body: Stack(
         children: [
           Positioned.fill(
@@ -117,6 +119,7 @@ class _SignState extends State<Sign> {
                               ),
                             ),
                             child: TextFormField(
+                              autofocus: true,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 labelText: 'E-Mail',
@@ -158,6 +161,7 @@ class _SignState extends State<Sign> {
                               ),
                             ),
                             child: TextFormField(
+                              autofocus: true,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 // iconColor: Colors.white,

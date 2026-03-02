@@ -11,8 +11,23 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
-  void _Navgitor() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+
+  Future<void>splash_screen()async{
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Login()),
+      );
+    });
+
+  }
+  
+  @override
+  void initState() {
+    splash_screen();
+    super.initState();
+
+    
   }
 
   @override
@@ -57,12 +72,6 @@ class _FirstPageState extends State<FirstPage> {
                   ),
                 
                 SizedBox(height: 100),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 20, // ارتفاع الظل
-                    shadowColor: Colors.white.withOpacity(0.5),
-                  ),
-                  onPressed: _Navgitor, child: Text('START NOW' ,style: TextStyle( color: const Color.fromARGB(135, 5, 40, 46)),)),
                 
               ],
             ),

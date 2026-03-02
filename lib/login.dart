@@ -11,6 +11,8 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  // ضبط احجام الشاشه تلقائيا
+
   var _formKey = GlobalKey<FormState>();
   var isLoading = false;
 
@@ -31,27 +33,30 @@ class _LoginState extends State<Login> {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Sign()));
   }
 
+  double get screenWidth => MediaQuery.of(context).size.width;
+  double get screenHeight => MediaQuery.of(context).size.height;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           Positioned.fill(
             child: Image.asset('image/new.jpg', fit: BoxFit.cover),
           ),
-          
-            Positioned(
-              right: 30,
-              left: 30,
-              
-              child:
-               Image.asset("image/30.png", width: 200, height: 200 )),
+
+          Positioned(
+            right: 30,
+            left: 30,
+
+            child: Image.asset("image/30.png", width: 200, height: 200),
+          ),
           Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 240),
               child: Container(
-                width: 400,
-                height: 400,
+                width: screenWidth * 400,
+                height: screenHeight * 400,
                 decoration: BoxDecoration(
                   color: Colors.white, // أبيض مع شفافية
                   borderRadius: BorderRadius.only(
@@ -68,28 +73,26 @@ class _LoginState extends State<Login> {
                 ),
                 child: Column(
                   children: [
-                   
                     Form(
                       key: _formKey,
                       child: Column(
                         children: <Widget>[
                           //styling
-                        SizedBox(height: 60),
-                        Container(  
+                          SizedBox(height: 60),
+                          Container(
                             width: 250,
                             height: 50,
 
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
-                                image: AssetImage(
-                                  "image/new.jpg",
-                                ), 
-                          
+                                image: AssetImage("image/new.jpg"),
+
                                 fit: BoxFit.cover,
                               ),
                             ),
                             child: TextFormField(
+                              autofocus: true,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 labelText: 'E-Mail',
@@ -127,12 +130,13 @@ class _LoginState extends State<Login> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
-                                image: AssetImage(
-                                  "image/new.jpg",
-                                ), 
-                                fit: BoxFit.cover,)),
+                                image: AssetImage("image/new.jpg"),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                             child: TextFormField(
-                                style: TextStyle(color: Colors.white),
+                              autofocus: true,
+                              style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 labelText: 'Password',
                                 labelStyle: TextStyle(color: Colors.white),
@@ -163,15 +167,14 @@ class _LoginState extends State<Login> {
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(
-                            left: 50,
-                            right:100 ,
-                          ),
+                          padding: const EdgeInsets.only(left: 50, right: 100),
                           child: TextButton(
                             onPressed: () {},
                             child: Text(
-                              "forget password?" ,style: TextStyle(color: const Color.fromARGB(221, 16, 92, 122)),
-                              
+                              "forget password?",
+                              style: TextStyle(
+                                color: const Color.fromARGB(221, 16, 92, 122),
+                              ),
                             ),
                           ),
                         ),
@@ -180,20 +183,22 @@ class _LoginState extends State<Login> {
 
                     //),
                     ElevatedButton(
-                      
                       onPressed: _submit,
-                      style:ButtonStyle(
+                      style: ButtonStyle(
                         shadowColor: MaterialStateProperty.all(
                           const Color.fromARGB(221, 16, 92, 122),
                         ),
-                        elevation: MaterialStateProperty.all(10)
+                        elevation: MaterialStateProperty.all(10),
                       ),
                       //ElevatedButton.styleFrom(
-                         
-                         
+
                       //),
-                      child: Text('Sign in', style: TextStyle(color: const Color.fromARGB(221, 16, 92, 122)),),
-                      
+                      child: Text(
+                        'Sign in',
+                        style: TextStyle(
+                          color: const Color.fromARGB(221, 16, 92, 122),
+                        ),
+                      ),
                     ),
 
                     Row(
@@ -202,7 +207,8 @@ class _LoginState extends State<Login> {
                         Text("Don't have an account"),
                         TextButton(
                           onPressed: _Navgitor,
-                          child: Text('Sign up',
+                          child: Text(
+                            'Sign up',
                             style: TextStyle(
                               color: const Color.fromARGB(221, 16, 92, 122),
                             ),
