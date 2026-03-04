@@ -13,6 +13,8 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
+  String savedEmail = "";
+  String savedPass = "";
 
   Future<void>splash_screen()async{
     Future.delayed(const Duration(seconds: 3), () {
@@ -31,9 +33,13 @@ class _FirstPageState extends State<FirstPage> {
 
   Future<void> _checkLogin() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    
+    savedEmail = prefs.getString('email') ?? "";
+    savedPass = prefs.getString('password') ?? "";
 
-    if (isLoggedIn) {
+    // bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+    if (savedEmail.isNotEmpty && savedPass.isNotEmpty) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => Indexpage()),
