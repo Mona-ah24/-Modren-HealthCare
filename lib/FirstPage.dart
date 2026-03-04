@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:healthcare/indexpage.dart';
 import 'package:healthcare/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //import 'indexpage.dart';
 
@@ -14,10 +16,7 @@ class _FirstPageState extends State<FirstPage> {
 
   Future<void>splash_screen()async{
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => Login()),
-      );
+      _checkLogin();
     });
 
   }
@@ -26,8 +25,25 @@ class _FirstPageState extends State<FirstPage> {
   void initState() {
     splash_screen();
     super.initState();
-
     
+    
+  }
+
+  Future<void> _checkLogin() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+    if (isLoggedIn) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Indexpage()),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Login()),
+      );
+    }
   }
 
   @override

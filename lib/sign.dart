@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-//import 'package:healthcare/Indexpage.dart';
+import 'package:healthcare/HomePage.dart';
+import 'package:healthcare/Indexpage.dart';
 import 'package:healthcare/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Sign extends StatefulWidget {
   const Sign({super.key});
@@ -11,24 +13,57 @@ class Sign extends StatefulWidget {
 
 class _SignState extends State<Sign> {
   // TextEditingController _Name=TextEditingController();
-  var _formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passController = TextEditingController();
+  final nameController = TextEditingController();
+ 
+  var formKey = GlobalKey<FormState>();
   var isLoading = false;
-  void _Navgitor() {
-    final isValid = _formKey.currentState?.validate();
+  bool isValidEmail(String email) {
+    return RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email);
+  }
+
+  bool isStrongPassword(String password) {
+    return RegExp(
+        r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$')
+        .hasMatch(password);
+  }
+
+  saveUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString('email', emailController.text);
+    await prefs.setString('password', passController.text);
+    await prefs.setBool('isFirstTime', false);
+
+    // Navigator.pushReplacement(
+    //     context,
+    //     MaterialPageRoute(builder: (_) =>  Login()));
+    final isValid = formKey.currentState?.validate();
     if (!isValid!) {
       return;
     } else {
       Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
     }
-    _formKey.currentState?.save();
+    formKey.currentState?.save();
+ 
   }
-
   double get screenWidth => MediaQuery.of(context).size.width;
   double get screenHeight => MediaQuery.of(context).size.height;
+  // void _Navgitor() {
+  //   final isValid = formKey.currentState?.validate();
+  //   if (!isValid!) {
+  //     return;
+  //   } else {
+  //     Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+  //   }
+  //   formKey.currentState?.save();
+  // }
+
+  @override
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:true,
       body: Stack(
         children: [
           Positioned.fill(
@@ -63,7 +98,7 @@ class _SignState extends State<Sign> {
                 child: Column(
                   children: [
                     Form(
-                      key: _formKey,
+                      key: formKey,
                       child: Column(
                         children: <Widget>[
                           SizedBox(height: 60),
@@ -78,7 +113,9 @@ class _SignState extends State<Sign> {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            child: TextFormField(
+                            child: 
+                            TextFormField(
+                              controller: nameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 labelStyle: TextStyle(color: Colors.white),
@@ -119,7 +156,7 @@ class _SignState extends State<Sign> {
                               ),
                             ),
                             child: TextFormField(
-                              autofocus: true,
+                              controller: emailController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 labelText: 'E-Mail',
@@ -161,7 +198,7 @@ class _SignState extends State<Sign> {
                               ),
                             ),
                             child: TextFormField(
-                              autofocus: true,
+                              controller: passController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 // iconColor: Colors.white,
@@ -199,12 +236,17 @@ class _SignState extends State<Sign> {
                         ),
                         elevation: MaterialStateProperty.all(10),
                       ),
-                      onPressed: _Navgitor,
-                      child: Text('Sign up',
-                    style: TextStyle(
-                              color: const Color.fromARGB(221, 16, 92, 122),
-                    ))
-                    ),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        saveUserData();
+                      }
+                    },
+                    child: Text('Sign up',
+                      style: TextStyle(
+                        color: const Color.fromARGB(221, 16, 92, 122),
+                      )
+                    )
+                  ),
                   ],
                 ),
               ),

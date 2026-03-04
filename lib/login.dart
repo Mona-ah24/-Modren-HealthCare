@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-//import 'package:healthcare/HomePage.dart';
-import 'package:healthcare/Indexpage.dart';
+import 'package:healthcare/indexpage.dart';
 import 'package:healthcare/sign.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -13,50 +13,89 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   // ضبط احجام الشاشه تلقائيا
 
+
+final emailController = TextEditingController();
+  final passController = TextEditingController();
+
+  String savedEmail = "";
+  String savedPass = "";
+
+  @override
+  void initState() {
+    super.initState();
+    loadSavedData();
+  }
+
+  loadSavedData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    savedEmail = prefs.getString('email') ?? "";
+    savedPass = prefs.getString('password') ?? "";
+
+    setState(() {
+      emailController.text = savedEmail;
+      passController.text = savedPass;
+    });
+  }
+
+  login() {
+    if (emailController.text == savedEmail &&
+        passController.text == savedPass) {
+
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const Indexpage()));
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Wrong Credentials")));
+    }
+  }
+
   var _formKey = GlobalKey<FormState>();
   var isLoading = false;
 
-  void _submit() {
-    final isValid = _formKey.currentState?.validate();
-    if (!isValid!) {
-      return;
-    } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Indexpage()),
-      );
-    }
-    _formKey.currentState?.save();
-  }
+  // void _submit() {
+  //   final isValid = _formKey.currentState?.validate();
+  //   if (!isValid!) {
+  //     return;
+  //   } else {
+  //     Navigator.push(
+  //       context,
+  //       MaterialPageRoute(builder: (context) => Indexpage()),
+  //     );
+  //   }
+  //   _formKey.currentState?.save();
+  // }
 
   void _Navgitor() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => Sign()));
   }
-
+  
   double get screenWidth => MediaQuery.of(context).size.width;
   double get screenHeight => MediaQuery.of(context).size.height;
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           Positioned.fill(
             child: Image.asset('image/new.jpg', fit: BoxFit.cover),
           ),
-
-          Positioned(
-            right: 30,
-            left: 30,
-
-            child: Image.asset("image/30.png", width: 200, height: 200),
-          ),
+          
+            Positioned(
+              right: 30,
+              left: 30,
+              
+              child:
+               Image.asset("image/30.png", width: 200, height: 200 )),
           Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 240),
               child: Container(
-                width: screenWidth * 400,
-                height: screenHeight * 400,
+                width: 400,
+                height: 400,
                 decoration: BoxDecoration(
                   color: Colors.white, // أبيض مع شفافية
                   borderRadius: BorderRadius.only(
@@ -73,26 +112,29 @@ class _LoginState extends State<Login> {
                 ),
                 child: Column(
                   children: [
+                   
                     Form(
                       key: _formKey,
                       child: Column(
                         children: <Widget>[
                           //styling
-                          SizedBox(height: 60),
-                          Container(
+                        SizedBox(height: 60),
+                        Container(  
                             width: 250,
                             height: 50,
 
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
-                                image: AssetImage("image/new.jpg"),
-
+                                image: AssetImage(
+                                  "image/new.jpg",
+                                ), 
+                          
                                 fit: BoxFit.cover,
                               ),
                             ),
                             child: TextFormField(
-                              autofocus: true,
+                              controller: emailController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 labelText: 'E-Mail',
@@ -130,13 +172,13 @@ class _LoginState extends State<Login> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
-                                image: AssetImage("image/new.jpg"),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+                                image: AssetImage(
+                                  "image/new.jpg",
+                                ), 
+                                fit: BoxFit.cover,)),
                             child: TextFormField(
-                              autofocus: true,
-                              style: TextStyle(color: Colors.white),
+                              controller: passController,
+                                style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 labelText: 'Password',
                                 labelStyle: TextStyle(color: Colors.white),
@@ -167,14 +209,15 @@ class _LoginState extends State<Login> {
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(left: 50, right: 100),
+                          padding: const EdgeInsets.only(
+                            left: 50,
+                            right:100 ,
+                          ),
                           child: TextButton(
                             onPressed: () {},
                             child: Text(
-                              "forget password?",
-                              style: TextStyle(
-                                color: const Color.fromARGB(221, 16, 92, 122),
-                              ),
+                              "forget password?" ,style: TextStyle(color: const Color.fromARGB(221, 16, 92, 122)),
+                              
                             ),
                           ),
                         ),
@@ -183,22 +226,20 @@ class _LoginState extends State<Login> {
 
                     //),
                     ElevatedButton(
-                      onPressed: _submit,
-                      style: ButtonStyle(
+                      
+                      onPressed: login,
+                      style:ButtonStyle(
                         shadowColor: MaterialStateProperty.all(
                           const Color.fromARGB(221, 16, 92, 122),
                         ),
-                        elevation: MaterialStateProperty.all(10),
+                        elevation: MaterialStateProperty.all(10)
                       ),
                       //ElevatedButton.styleFrom(
-
+                         
+                         
                       //),
-                      child: Text(
-                        'Sign in',
-                        style: TextStyle(
-                          color: const Color.fromARGB(221, 16, 92, 122),
-                        ),
-                      ),
+                      child: Text('Sign in', style: TextStyle(color: const Color.fromARGB(221, 16, 92, 122)),),
+                      
                     ),
 
                     Row(
@@ -207,8 +248,7 @@ class _LoginState extends State<Login> {
                         Text("Don't have an account"),
                         TextButton(
                           onPressed: _Navgitor,
-                          child: Text(
-                            'Sign up',
+                          child: Text('Sign up',
                             style: TextStyle(
                               color: const Color.fromARGB(221, 16, 92, 122),
                             ),
