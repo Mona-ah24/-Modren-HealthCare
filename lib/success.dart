@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:healthcare/userDataInput.dart';
 
 import 'Indexpage.dart';
 
@@ -75,7 +76,7 @@ class success extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Indexpage()),
+                        MaterialPageRoute(builder: (context) => UserFormPage()),
                       );
                     },
                     child: Text(

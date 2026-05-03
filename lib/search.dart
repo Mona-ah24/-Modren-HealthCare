@@ -157,6 +157,7 @@ class _SearchState extends State<Search> {
                           itemCount: filteredDoctors.length,
                           itemBuilder: (context, index) {
                             return CoustemCard(
+                              id: "id${index + 1}",
                               title: filteredDoctors[index]["title"]!,
                               subtitle: filteredDoctors[index]["subtitle"]!,
                               imagepath: filteredDoctors[index]["image"]!,

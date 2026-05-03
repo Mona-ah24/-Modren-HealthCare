@@ -34,7 +34,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -224,9 +223,8 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     padding: EdgeInsets.all(5),
                     width: 400,
-                    height:  300,
+                    height: 300,
                     child: SingleChildScrollView(
-                    
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -237,19 +235,19 @@ class _HomePageState extends State<HomePage> {
                           // )
                           SizedBox(width: 10),
                           CoustemCard(
+                            id: "id8",
                             title: "Dr.Zainab Ahmed",
                             subtitle: "Valve Disease Expert",
                             imagepath: "image/16.jpg",
                           ),
 
                           SizedBox(width: 10),
-
                           CoustemCard(
-                            title: "Dr.Mohammed Abdollah",
+                            id: "id5",
+                            title: "Dr.Ahmed Abdollah",
                             subtitle: "Cardiology Consultant",
                             imagepath: "image/12.jpg",
                           ),
-
                           SizedBox(width: 10),
                           /*Container(
                               width: 350,
@@ -262,6 +260,7 @@ class _HomePageState extends State<HomePage> {
                               )*/
                           //child:
                           CoustemCard(
+                            id: "id10",
                             title: "Dr.Mona Ahmed",
                             subtitle: "Cosmetic Dentistry Expert",
                             imagepath: "image/17.jpg",
@@ -269,6 +268,7 @@ class _HomePageState extends State<HomePage> {
                           //),
                           SizedBox(width: 10),
                           CoustemCard(
+                            id: "id1",
                             title: "Dr.Ali Nasse",
                             subtitle: "Brain & Nerve Specialist",
                             imagepath: "image/7.jpg",

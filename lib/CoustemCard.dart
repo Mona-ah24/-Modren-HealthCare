@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:healthcare/chat_screen.dart';
 import 'package:healthcare/success.dart';
 
 class CoustemCard extends StatefulWidget {
+  final String id;
   final String title;
   final String imagepath;
   final String subtitle;
 
   const CoustemCard({
     super.key,
+    required this.id,
     required this.title,
     required this.subtitle,
     required this.imagepath,
@@ -18,6 +21,28 @@ class CoustemCard extends StatefulWidget {
 }
 
 class _CoustemCardState extends State<CoustemCard> {
+  late List<Map<String, String>> doctors;
+
+  @override
+  // void initState() {
+  //   super.initState();
+  //   doctors = [
+  //     {"doctorId": "d1", "doctorName": widget.title},
+  //     {"doctorId": "d2", "doctorName": "Dr. Sara"},
+  //   ];
+  // }
+
+  void navigateToChat(Map<String, String> doctor) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ChatScreen(
+          doctorId: widget.id,
+          doctorName:widget.title,
+        ),
+      ),
+    );
+  }
   bool orderPlaced = false;
 
   @override
@@ -49,7 +74,8 @@ class _CoustemCardState extends State<CoustemCard> {
                       size: 20,
                     ),
                     onPressed: () {
-                      
+                      // Pass the first doctor for demonstration; adjust as needed
+                      navigateToChat({"doctorId": widget.id, "doctorName": widget.title});
                     },
                   ),
                   IconButton(

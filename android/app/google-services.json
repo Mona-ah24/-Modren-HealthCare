@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1059802578212",
+    "project_id": "zianab-02",
+    "storage_bucket": "zianab-02.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059802578212:android:9196ba685fcf12a2ed87b1",
+        "android_client_info": {
+          "package_name": "com.example.healthcare"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeDa4OhC2oxaOs0LzzPR1pgekiQB2Uo0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059802578212:android:17634583f9faad73ed87b1",
+        "android_client_info": {
+          "package_name": "com.example.tasks_management"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBeDa4OhC2oxaOs0LzzPR1pgekiQB2Uo0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

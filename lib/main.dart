@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart'; // Add this import for localization delegates
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:healthcare/FirstPage.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(const MyApp());
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -19,8 +23,7 @@ return Directionality(
     Locale('en', 'US'),
     Locale('ar', 'EG'),
   ],
-  localizationsDelegates: [
-    // هذه ضرورية لدعم النصوص والاتجاه
+   localizationsDelegates: const [
     GlobalMaterialLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,
