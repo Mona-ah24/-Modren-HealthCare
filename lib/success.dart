@@ -76,7 +76,7 @@ class success extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => UserFormPage()),
+                        MaterialPageRoute(builder: (context) => DoctorsListMobile()),
                       );
                     },
                     child: Text(
