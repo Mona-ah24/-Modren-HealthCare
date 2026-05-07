@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:healthcare/TrackAppointmentScreen.dart';
 import 'HomePage.dart';
 
 
 class UserFormPage extends StatefulWidget {
-  const UserFormPage({super.key});
+  final String id;
+  const UserFormPage({
+    super.key,
+    required this.id,
+  
+  });
+  
 
   @override
   State<UserFormPage> createState() => _UserFormPageState();
@@ -21,6 +28,29 @@ class _UserFormPageState extends State<UserFormPage> {
 
   String? _gender;
 
+  // هذا الكود يوضع داخل دالة الحجز في تطبيق الموبايل
+// Future<void> bookAppointment(String selectedDoctorId, String patientName) async {
+//   try {
+//     await FirebaseFirestore.instance.collection('appointments').add({
+//       // 1. أهم حقل: المعرف الخاص بالطبيب الذي اختاره المريض
+//       'doctorId': selectedDoctorId, 
+      
+//       // 2. بيانات المريض
+//       'patientName': patientName,
+//       'patientId': FirebaseAuth.instance.currentUser!.uid,
+      
+//       // 3. حالة الحجز الافتراضية
+//       'status': 'pending',
+      
+//       // 4. وقت الحجز (ضروري للترتيب الذي وضعناه في الويب)
+//       'createdAt': FieldValue.serverTimestamp(), 
+//     });
+    
+//     print("تم الحجز بنجاح!");
+//   } catch (e) {
+//     print("خطأ في الحجز: $e");
+//   }
+// }
   Future<void> _submitForm() async {
     try {
       if (_formKey.currentState!.validate()) {
@@ -73,15 +103,15 @@ class _UserFormPageState extends State<UserFormPage> {
         setState(() {
           _gender = null;
         });
-
+        
         // الانتقال للصفحة الرئيسية
         Future.delayed(const Duration(seconds: 1), () {
           if (!mounted) return;
 
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (_) => const HomePage()),
-          );
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(builder: (_) => const  TrackAppointmentScreen(appointmentId: '${uid}_${widget.id}')),
+          // );
         });
       }
     } catch (e) {
@@ -89,7 +119,7 @@ class _UserFormPageState extends State<UserFormPage> {
     }
   }
 
-  @override
+   @override
   void dispose() {
     _nameController.dispose();
     _phoneController.dispose();
@@ -208,9 +238,70 @@ class _UserFormPageState extends State<UserFormPage> {
 
               // SUBMIT BUTTON
               ElevatedButton(
-                onPressed: _submitForm,
-                child: const Text('Submit'),
-              ),
+                onPressed: 
+                    () async {
+                        try {
+                          _submitForm();
+                          final uid = FirebaseAuth.instance.currentUser!.uid;
+
+                          // بيانات المريض
+                          // final userDoc = await FirebaseFirestore.instance
+                          //     .collection('users')
+                          //     .doc(uid)
+                          //     .get();
+
+                          // final patientData = userDoc.data();
+
+                          // // بيانات الدكتور
+                          // final doctorDoc = await FirebaseFirestore.instance
+                          //     .collection('doctors')
+                          //     .doc(widget.id)
+                          //     .get();
+
+                          // final doctorData = doctorDoc.data();
+
+                          // إنشاء الموعد
+                          // final docRef = FirebaseFirestore.instance
+                          //     .collection('appointments')
+                          //     .doc('${uid}_${widget.id}');
+
+                          // final doc = await docRef.get();
+
+                          // if (!doc.exists) {
+                          //   await docRef.set({
+                          //     'doctorId': widget.id,
+                          //     'patientId': uid,
+                          //     'patientName': patientData?['name'] ?? '',
+                          //     'doctorName': doctorData?['name'] ?? '',
+                          //     'status': 'pending',
+                          //     'createdAt': FieldValue.serverTimestamp(),
+                          //   });
+                          // }
+
+                          // if (!mounted) return;
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) =>TrackAppointmentScreen(appointmentId: '${uid}_${widget.id}')),
+                          );
+                        } catch (e) {
+                          print(e);
+
+
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text('Error: $e')));
+                          
+                        }
+                      },
+
+                child: Text(
+                   "Get",
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 9, 108, 126),
+                  ),
+                ),
+              )
             ],
           ),
         ),

@@ -51,6 +51,7 @@ dependencies:
   excel: 
   pdf: 
   printing: 
+  im_stepper:
   flutter_localizations:
     sdk: flutter
   
