@@ -1,79 +1,83 @@
 import 'package:flutter/material.dart';
 import 'package:healthcare/indexpage.dart';
 import 'package:healthcare/sign.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:healthcare/auth_service.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  final String email;
+  final String password;
+
+  const Login({super.key, this.email = '', this.password = ''});
 
   @override
   State<Login> createState() => _LoginState();
 }
 
 class _LoginState extends State<Login> {
-  // ضبط احجام الشاشه تلقائيا
-
-
-final emailController = TextEditingController();
+  final emailController = TextEditingController();
   final passController = TextEditingController();
 
-  String savedEmail = "";
-  String savedPass = "";
+  final _formKey = GlobalKey<FormState>();
+
+  bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    loadSavedData();
+
+    // تعبئة تلقائية من صفحة التسجيل
+    emailController.text = widget.email;
+    passController.text = widget.password;
   }
 
-  loadSavedData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    savedEmail = prefs.getString('email') ?? "";
-    savedPass = prefs.getString('password') ?? "";
+  // LOGIN FUNCTION
+  Future<void> login() async {
+    final isValid = _formKey.currentState!.validate();
+    if (!isValid) return;
 
     setState(() {
-      emailController.text = savedEmail;
-      passController.text = savedPass;
+      isLoading = true;
+    });
+
+    try {
+      await AuthService().login(
+        email: emailController.text.trim(),
+        password: passController.text.trim(),
+      );
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Login Successfully")));
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const Indexpage()),
+      );
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
+    }
+
+    setState(() {
+      isLoading = false;
     });
   }
 
-  login() {
-    if (emailController.text == savedEmail &&
-        passController.text == savedPass) {
-
-      Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (_) => const Indexpage()));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Wrong Credentials")));
-    }
+  // NAVIGATE TO SIGN UP
+  void navigatorToSignUp() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Sign()),
+    );
   }
 
-  var _formKey = GlobalKey<FormState>();
-  var isLoading = false;
-
-  // void _submit() {
-  //   final isValid = _formKey.currentState?.validate();
-  //   if (!isValid!) {
-  //     return;
-  //   } else {
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => Indexpage()),
-  //     );
-  //   }
-  //   _formKey.currentState?.save();
-  // }
-
-  void _Navgitor() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Sign()));
-  }
-  
   double get screenWidth => MediaQuery.of(context).size.width;
   double get screenHeight => MediaQuery.of(context).size.height;
- 
 
   @override
   Widget build(BuildContext context) {
@@ -83,13 +87,12 @@ final emailController = TextEditingController();
           Positioned.fill(
             child: Image.asset('image/new.jpg', fit: BoxFit.cover),
           ),
-          
-            Positioned(
-              right: 30,
-              left: 30,
-              
-              child:
-               Image.asset("image/30.png", width: 200, height: 200 )),
+
+          Padding(
+            padding: EdgeInsetsGeometry.only(left: 80 ,right: 80),
+            child: Image.asset("image/30.png", width: 200, height: 200),
+          ),
+
           Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 240),
@@ -97,12 +100,12 @@ final emailController = TextEditingController();
                 width: 400,
                 height: 400,
                 decoration: BoxDecoration(
-                  color: Colors.white, // أبيض مع شفافية
-                  borderRadius: BorderRadius.only(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(170),
                     topRight: Radius.circular(170),
                   ),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Colors.white,
                       blurRadius: 8,
@@ -110,52 +113,46 @@ final emailController = TextEditingController();
                     ),
                   ],
                 ),
+
                 child: Column(
                   children: [
-                   
                     Form(
                       key: _formKey,
                       child: Column(
                         children: <Widget>[
-                          //styling
-                        SizedBox(height: 60),
-                        Container(  
+                          const SizedBox(height: 60),
+
+                          // EMAIL
+                          Container(
                             width: 250,
                             height: 50,
-
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                  "image/new.jpg",
-                                ), 
-                          
+                              image: const DecorationImage(
+                                image: AssetImage("image/new.jpg"),
                                 fit: BoxFit.cover,
                               ),
                             ),
                             child: TextFormField(
                               controller: emailController,
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
                                 labelText: 'E-Mail',
-                                labelStyle: TextStyle(color: Colors.white),
-                                //filled: true,
-
-                                // fillColor: Colors.white.withOpacity(0.7),
+                                labelStyle: const TextStyle(
+                                  color: Colors.white,
+                                ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40),
                                   borderSide: BorderSide.none,
                                 ),
                               ),
                               keyboardType: TextInputType.emailAddress,
-                              onFieldSubmitted: (value) {
-                                //Validator
-                              },
                               validator: (value) {
-                                if (value!.isEmpty ||
+                                if (value == null ||
+                                    value.isEmpty ||
                                     !RegExp(
                                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                                    ).hasMatch(value!)) {
+                                    ).hasMatch(value)) {
                                   return 'Enter a valid email!';
                                 }
                                 return null;
@@ -163,37 +160,35 @@ final emailController = TextEditingController();
                             ),
                           ),
 
-                          //box styling
-                          SizedBox(height: 10),
-                          //text input
+                          const SizedBox(height: 10),
+
+                          // PASSWORD
                           Container(
                             width: 250,
                             height: 50,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              image: DecorationImage(
-                                image: AssetImage(
-                                  "image/new.jpg",
-                                ), 
-                                fit: BoxFit.cover,)),
+                              image: const DecorationImage(
+                                image: AssetImage("image/new.jpg"),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                             child: TextFormField(
                               controller: passController,
-                                style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
+                              obscureText: true,
                               decoration: InputDecoration(
                                 labelText: 'Password',
-                                labelStyle: TextStyle(color: Colors.white),
-                                //filled: true,
-                                //fillColor: Colors.white,
+                                labelStyle: const TextStyle(
+                                  color: Colors.white,
+                                ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40),
                                   borderSide: BorderSide.none,
                                 ),
                               ),
-                              keyboardType: TextInputType.emailAddress,
-                              onFieldSubmitted: (value) {},
-                              obscureText: true,
                               validator: (value) {
-                                if (value!.isEmpty) {
+                                if (value == null || value.isEmpty) {
                                   return 'Enter a valid password!';
                                 }
                                 return null;
@@ -203,54 +198,61 @@ final emailController = TextEditingController();
                         ],
                       ),
                     ),
-                    //Padding(
-                    // padding: const EdgeInsets.symmetric({}),
-                    // child:
+
                     Row(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(
-                            left: 50,
-                            right:100 ,
-                          ),
+                          padding: const EdgeInsets.only(left: 50, right: 100),
                           child: TextButton(
                             onPressed: () {},
-                            child: Text(
-                              "forget password?" ,style: TextStyle(color: const Color.fromARGB(221, 16, 92, 122)),
-                              
+                            child: const Text(
+                              "forget password?",
+                              style: TextStyle(
+                                color: Color.fromARGB(221, 16, 92, 122),
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
 
-                    //),
+                    // LOGIN BUTTON
                     ElevatedButton(
-                      
-                      onPressed: login,
-                      style:ButtonStyle(
-                        shadowColor: MaterialStateProperty.all(
+                      onPressed: isLoading
+                          ? null
+                          : () async {
+                              await login();
+                            },
+                      style: ButtonStyle(
+                        shadowColor: WidgetStateProperty.all(
                           const Color.fromARGB(221, 16, 92, 122),
                         ),
-                        elevation: MaterialStateProperty.all(10)
+                        elevation: WidgetStateProperty.all(10),
                       ),
-                      //ElevatedButton.styleFrom(
-                         
-                         
-                      //),
-                      child: Text('Sign in', style: TextStyle(color: const Color.fromARGB(221, 16, 92, 122)),),
-                      
+                      child: isLoading
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Text(
+                              'Sign in',
+                              style: TextStyle(
+                                color: Color.fromARGB(221, 16, 92, 122),
+                              ),
+                            ),
                     ),
 
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Don't have an account"),
+                        const Text("Don't have an account"),
                         TextButton(
-                          onPressed: _Navgitor,
-                          child: Text('Sign up',
+                          onPressed: navigatorToSignUp,
+                          child: const Text(
+                            'Sign up',
                             style: TextStyle(
-                              color: const Color.fromARGB(221, 16, 92, 122),
+                              color: Color.fromARGB(221, 16, 92, 122),
                             ),
                           ),
                         ),

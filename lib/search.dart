@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:healthcare/CoustemCard.dart';
 
 class Search extends StatefulWidget {
+  const Search({super.key});
+
   @override
   _SearchState createState() => _SearchState();
 }
@@ -157,6 +159,7 @@ class _SearchState extends State<Search> {
                           itemCount: filteredDoctors.length,
                           itemBuilder: (context, index) {
                             return CoustemCard(
+                              id: "id${index + 1}",
                               title: filteredDoctors[index]["title"]!,
                               subtitle: filteredDoctors[index]["subtitle"]!,
                               imagepath: filteredDoctors[index]["image"]!,

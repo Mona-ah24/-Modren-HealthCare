@@ -37,17 +37,20 @@ class _ToothdoctursState extends State<Toothdocturs> {
                   child: Column(
                     children: [
                       CoustemCard(
+                        id: "id9",
                         title: "Dr.Hadi Yaser",
                         subtitle: "General Dentist",
                         imagepath: "image/15.jpg",
                       ),
         
                       CoustemCard(
+                        id: "id10",
                         title: "Dr.Mona Ahmed",
                         subtitle: "Cosmetic Dentistry Expert",
                         imagepath: "image/17.jpg",
                       ),
                       CoustemCard(
+                        id: "id11",
                         title: "Dr.Saleh Salem",
                         subtitle: "Oral Surgeon",
                         imagepath: "image/18.jpg",

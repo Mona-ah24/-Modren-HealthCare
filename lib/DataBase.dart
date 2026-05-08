@@ -16,7 +16,7 @@ class SqlDb {
   }
 
   // here we init the database and creat the tables
-  initalDb() async {
+  Future<Database> initalDb() async {
     String databasepath = await getDatabasesPath();
     String path = join(databasepath, 'mona.db');
     await deleteDatabase(path);
@@ -29,7 +29,7 @@ class SqlDb {
     return mydb;
   }
 
-  _onUpgrade(Database db, int oldversion, int newversion) async {
+  Future<void> _onUpgrade(Database db, int oldversion, int newversion) async {
     await db.execute('''
         CREATE TABLE "products"(
         "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -42,7 +42,7 @@ class SqlDb {
     print("onUpgrae =========================");
   }
 
-  _onCreate(Database db, int version) async {
+  Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
         CREATE TABLE "notes"(
         "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -60,28 +60,28 @@ class SqlDb {
   }
 
   // SELECT
-  readData(String sql) async {
+  Future<List<Map<dynamic, dynamic>>> readData(String sql) async {
     Database? mydb = await db;
     List<Map> response = await mydb!.rawQuery(sql);
     return response;
   }
 
   // INSERT
-  insertData(String sql) async {
+  Future<int> insertData(String sql) async {
     Database? mydb = await db;
     int response = await mydb!.rawInsert(sql);
     return response;
   }
 
   // UPDATE
-  updateData(String sql) async {
+  Future<int> updateData(String sql) async {
     Database? mydb = await db;
     int response = await mydb!.rawUpdate(sql);
     return response;
   }
 
   // DELETE
-  deleteData(String sql) async {
+  Future<int> deleteData(String sql) async {
     Database? mydb = await db;
     int response = await mydb!.rawDelete(sql);
     return response;

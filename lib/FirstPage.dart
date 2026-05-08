@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:healthcare/indexpage.dart';
 import 'package:healthcare/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-//import 'indexpage.dart';
 
 class FirstPage extends StatefulWidget {
   const FirstPage({super.key});
@@ -13,41 +11,29 @@ class FirstPage extends StatefulWidget {
 }
 
 class _FirstPageState extends State<FirstPage> {
-  String savedEmail = "";
-  String savedPass = "";
+  @override
+  void initState() {
+    super.initState();
 
-  Future<void>splash_screen()async{
     Future.delayed(const Duration(seconds: 3), () {
       _checkLogin();
     });
-
-  }
-  
-  @override
-  void initState() {
-    splash_screen();
-    super.initState();
-    
-    
   }
 
-  Future<void> _checkLogin() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    
-    savedEmail = prefs.getString('email') ?? "";
-    savedPass = prefs.getString('password') ?? "";
+  void _checkLogin() {
+    final user = FirebaseAuth.instance.currentUser;
 
-    // bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
-
-    if (savedEmail.isNotEmpty && savedPass.isNotEmpty) {
+    if (user != null) {
+      // المستخدم مسجل دخول
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Indexpage()),
+        MaterialPageRoute(builder: (_) => const Indexpage()),
       );
     } else {
+      // المستخدم غير مسجل
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Login()),
+        MaterialPageRoute(builder: (_) => const Login()),
       );
     }
   }
@@ -55,46 +41,42 @@ class _FirstPageState extends State<FirstPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      // appBar: AppBar( title: Text("data"),),
       body: Stack(
         children: [
           Positioned.fill(
             child: Image.asset('image/new.jpg', fit: BoxFit.cover),
-            
           ),
+
           Positioned(
             top: 0,
             right: 0,
-            
-            child: Image.asset('image/doc1.png',
-                width: 150,
-                height: 200,
-              fit: BoxFit.contain, 
-                )),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: Image.asset('image/doc3.png',
+            child: Image.asset(
+              'image/doc1.png',
               width: 150,
               height: 200,
               fit: BoxFit.contain,
             ),
           ),
 
+          Positioned(
+            bottom: 0,
+            left: 0,
+            child: Image.asset(
+              'image/doc3.png',
+              width: 150,
+              height: 200,
+              fit: BoxFit.contain,
+            ),
+          ),
 
           Center(
             child: Column(
               children: [
-              SizedBox(height: 100),
-                Image.asset('image/30.png',
-                  width: 150,
-                  height: 200,
-                fit: BoxFit.contain, 
-                  ),
-                
-                SizedBox(height: 100),
-                
+                const SizedBox(height: 100),
+
+                Image.asset('image/30.png', width: 150, height: 200),
+
+                const SizedBox(height: 100),
               ],
             ),
           ),
