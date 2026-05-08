@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:healthcare/HomePage.dart';
-import 'package:healthcare/Indexpage.dart';
 import 'package:healthcare/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'auth_service.dart';
+//import 'package:shared_preferences/shared_preferences.dart';
 
 class Sign extends StatefulWidget {
   const Sign({super.key});
@@ -29,36 +28,44 @@ class _SignState extends State<Sign> {
         .hasMatch(password);
   }
 
-  saveUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future<void> signUp() async {
+    final isValid = formKey.currentState!.validate();
 
-    await prefs.setString('email', emailController.text);
-    await prefs.setString('password', passController.text);
-    await prefs.setBool('isFirstTime', false);
+    if (!isValid) return;
 
-    // Navigator.pushReplacement(
-    //     context,
-    //     MaterialPageRoute(builder: (_) =>  Login()));
-    final isValid = formKey.currentState?.validate();
-    if (!isValid!) {
-      return;
-    } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      await AuthService().signUp(
+        email: emailController.text.trim(),
+        password: passController.text.trim(),
+      );
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Account created successfully")));
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => Login(
+            email: emailController.text.trim(),
+            password: passController.text.trim(),
+          ),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.toString())));
     }
-    formKey.currentState?.save();
- 
+
+    setState(() {
+      isLoading = false;
+    });
   }
-  double get screenWidth => MediaQuery.of(context).size.width;
-  double get screenHeight => MediaQuery.of(context).size.height;
-  // void _Navgitor() {
-  //   final isValid = formKey.currentState?.validate();
-  //   if (!isValid!) {
-  //     return;
-  //   } else {
-  //     Navigator.push(context, MaterialPageRoute(builder: (context) => Login()));
-  //   }
-  //   formKey.currentState?.save();
-  // }
 
   @override
   @override
@@ -176,7 +183,7 @@ class _SignState extends State<Sign> {
                                 if (value!.isEmpty ||
                                     !RegExp(
                                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                                    ).hasMatch(value!)) {
+                                    ).hasMatch(value)) {
                                   return 'Enter a valid email!';
                                 }
                                 return null;
@@ -231,16 +238,14 @@ class _SignState extends State<Sign> {
                     // ElevatedButton(onPressed: _submit, child: Text('SIGN IN')),
                     ElevatedButton(
                       style: ButtonStyle(
-                        shadowColor: MaterialStateProperty.all(
+                        shadowColor: WidgetStateProperty.all(
                         const Color.fromARGB(221, 16, 92, 122), 
                         ),
-                        elevation: MaterialStateProperty.all(10),
+                        elevation: WidgetStateProperty.all(10),
                       ),
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        saveUserData();
-                      }
-                    },
+                    onPressed: () async {
+                        await signUp();
+                      },
                     child: Text('Sign up',
                       style: TextStyle(
                         color: const Color.fromARGB(221, 16, 92, 122),

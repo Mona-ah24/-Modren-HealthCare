@@ -18,7 +18,7 @@ class Indexpage extends StatefulWidget {
 class _IndexpageState extends State<Indexpage> {
   int _bottomnav = 0;
 
-  List<Widget> _pages = [HomePage(), Search(), About()];
+  final List<Widget> _pages = [HomePage(), Search(), About()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +107,7 @@ class _IndexpageState extends State<Indexpage> {
           ],
         ),
       ),
-      body: IndexedStack(children: _pages, index: _bottomnav),
+      body: IndexedStack(index: _bottomnav, children: _pages),
 
       bottomNavigationBar: CurvedNavigationBar(
         

@@ -35,7 +35,7 @@ class _BrainDoctorsState extends State<BrainDoctors> {
                       color: Colors.white,
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: 470,
                     child: Column(
                       children: [

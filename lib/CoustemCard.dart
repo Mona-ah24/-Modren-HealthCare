@@ -56,12 +56,12 @@ class _CoustemCardState extends State<CoustemCard> {
           fontWeight: FontWeight.bold,
           color: const Color.fromARGB(255, 9, 108, 126),
         ),
-        title: Text("${widget.title}"),
-        subtitle: Text("${widget.subtitle}"),
+        title: Text(widget.title),
+        subtitle: Text(widget.subtitle),
         leading: CircleAvatar(
           radius: 40,
           backgroundImage: Image.asset(
-            "${widget.imagepath}",
+            widget.imagepath,
             fit: BoxFit.contain,
           ).image,
         ),

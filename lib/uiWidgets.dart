@@ -6,7 +6,7 @@ class ChatBubble extends StatelessWidget {
   final String? imageUrl;
   final bool isMe;
 
-  ChatBubble({this.text, this.imageUrl, required this.isMe});
+  const ChatBubble({super.key, this.text, this.imageUrl, required this.isMe});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class MessageInput extends StatefulWidget {
   final Function(String) onSend;
   final Function() onSendImage;
 
-  MessageInput({required this.onSend, required this.onSendImage});
+  const MessageInput({super.key, required this.onSend, required this.onSendImage});
 
   @override
   _MessageInputState createState() => _MessageInputState();

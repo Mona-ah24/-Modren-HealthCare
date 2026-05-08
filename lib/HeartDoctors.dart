@@ -36,7 +36,7 @@ class _HeartDoctorsState extends State<HeartDoctors> {
                       color: Colors.white,
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: 470,
                     child: Column(
                       children: [

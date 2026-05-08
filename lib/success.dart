@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthcare/userDataInput.dart';
 
-import 'Indexpage.dart';
 
 class success extends StatelessWidget {
   const success({super.key});
@@ -74,13 +73,15 @@ class success extends StatelessWidget {
                       backgroundColor: Colors.teal,
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => UserFormPage()),
-                      );
-                    },
+  Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(
+      builder: (_) => const UserFormPage(),
+    ),
+  );
+},
                     child: Text(
-                      'Home page',
+                      'User Data',
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
