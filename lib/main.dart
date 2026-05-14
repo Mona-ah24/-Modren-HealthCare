@@ -4,7 +4,6 @@ import 'package:healthcare/FirstPage.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -24,7 +23,7 @@ return Directionality(
     Locale('en', 'US'),
     Locale('ar', 'EG'),
   ],
-   localizationsDelegates: const [
+  localizationsDelegates: const [
     GlobalMaterialLocalizations.delegate,
     GlobalWidgetsLocalizations.delegate,
     GlobalCupertinoLocalizations.delegate,

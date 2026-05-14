@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:healthcare/sqlDatabase.dart';
-import 'package:healthcare/userModel.dart';
-import 'package:healthcare/HomePage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'HomePage.dart';
+
 
 class UserFormPage extends StatefulWidget {
   const UserFormPage({super.key});
@@ -21,50 +22,70 @@ class _UserFormPageState extends State<UserFormPage> {
   String? _gender;
 
   Future<void> _submitForm() async {
-    if (_formKey.currentState!.validate()) {
+    try {
+      if (_formKey.currentState!.validate()) {
+        final userData = {
+          'name': _nameController.text.trim(),
+          'phone': _phoneController.text.trim(),
+          'age': int.parse(_ageController.text.trim()),
+          'gender': _gender,
+          'email': _emailController.text.trim(),
+          'createdAt': FieldValue.serverTimestamp(),
+        };
 
-      final user = UserModel(
-        name: _nameController.text.trim(),
-        phone: _phoneController.text.trim(),
-        age: int.parse(_ageController.text.trim()),
-        gender: _gender!,
-        email: _emailController.text.trim(),
-      );
+        // id للـ user (لو مستخدم مسجل)
+        final user = FirebaseAuth.instance.currentUser;
+        if (user == null) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Please login first'),
+              backgroundColor: Colors.red,
+            ),
+          );
+          return;
+        }
 
-      await DatabaseHelper.instance.insertUser(user);
+        final uid = FirebaseAuth.instance.currentUser!.uid;
 
-      if (!mounted) return;
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .set(userData);
 
-      // SnackBar نجاح
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('تم حفظ البيانات بنجاح ✅'),
-          backgroundColor: Colors.green,
-          duration: Duration(seconds: 2),
-        ),
-      );
 
-      // تنظيف الحقول
-      _nameController.clear();
-      _phoneController.clear();
-      _ageController.clear();
-      _emailController.clear();
-
-      setState(() {
-        _gender = null;
-      });
-
-      // الانتقال للـ Home مع استبدال الصفحة
-      Future.delayed(const Duration(seconds: 2), () {
         if (!mounted) return;
 
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (_) => const HomePage(),
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('تم حفظ البيانات بنجاح في Firebase ✅'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
           ),
         );
-      });
+
+        // تنظيف الحقول
+        _nameController.clear();
+        _phoneController.clear();
+        _ageController.clear();
+        _emailController.clear();
+
+        setState(() {
+          _gender = null;
+        });
+
+        // الانتقال للصفحة الرئيسية
+        Future.delayed(const Duration(seconds: 1), () {
+          if (!mounted) return;
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const HomePage()),
+          );
+        });
+      }
+    } catch (e) {
+      debugPrint("Firebase Error: $e");
     }
   }
 
@@ -80,31 +101,23 @@ class _UserFormPageState extends State<UserFormPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     appBar: AppBar(
+      appBar: AppBar(
         title: const Text('User Form'),
-        automaticallyImplyLeading: false, //  يشيل السهم
+        automaticallyImplyLeading: false,
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(16),
-
         child: Form(
           key: _formKey,
-
           child: ListView(
             children: [
-
               // NAME
               TextFormField(
                 controller: _nameController,
                 decoration: const InputDecoration(labelText: 'Name'),
-
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'الاسم مطلوب';
-                  }
-                  if (!RegExp(r'^[a-zA-Z\s]+$').hasMatch(value)) {
-                    return 'حروف فقط';
                   }
                   if (value.length < 3) {
                     return '3 أحرف على الأقل';
@@ -120,16 +133,12 @@ class _UserFormPageState extends State<UserFormPage> {
                 controller: _phoneController,
                 decoration: const InputDecoration(labelText: 'Phone'),
                 keyboardType: TextInputType.phone,
-
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'الهاتف مطلوب';
                   }
-                  if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                    return 'أرقام فقط';
-                  }
-                  if (value.length < 10) {
-                    return '10 أرقام على الأقل';
+                  if (value.length < 9) {
+                    return '9 أرقام على الأقل';
                   }
                   return null;
                 },
@@ -142,14 +151,13 @@ class _UserFormPageState extends State<UserFormPage> {
                 controller: _ageController,
                 decoration: const InputDecoration(labelText: 'Age'),
                 keyboardType: TextInputType.number,
-
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'العمر مطلوب';
                   }
                   final age = int.tryParse(value);
                   if (age == null || age < 1 || age > 120) {
-                    return 'بين 1 و 120';
+                    return 'عمر غير صحيح';
                   }
                   return null;
                 },
@@ -161,24 +169,15 @@ class _UserFormPageState extends State<UserFormPage> {
               DropdownButtonFormField<String>(
                 value: _gender,
                 decoration: const InputDecoration(labelText: 'Gender'),
-
                 items: const [
-                  DropdownMenuItem(
-                    value: 'Male',
-                    child: Text('Male'),
-                  ),
-                  DropdownMenuItem(
-                    value: 'Female',
-                    child: Text('Female'),
-                  ),
+                  DropdownMenuItem(value: 'Male', child: Text('Male')),
+                  DropdownMenuItem(value: 'Female', child: Text('Female')),
                 ],
-
                 onChanged: (val) {
                   setState(() {
                     _gender = val;
                   });
                 },
-
                 validator: (value) {
                   if (value == null) {
                     return 'اختر الجنس';
@@ -194,13 +193,12 @@ class _UserFormPageState extends State<UserFormPage> {
                 controller: _emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
-
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'البريد مطلوب';
                   }
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'صيغة غير صحيحة';
+                  if (!value.contains('@')) {
+                    return 'بريد غير صحيح';
                   }
                   return null;
                 },

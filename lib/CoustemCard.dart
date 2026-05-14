@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:healthcare/chat_screen.dart';
 import 'package:healthcare/success.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CoustemCard extends StatefulWidget {
   final String id;
@@ -90,19 +92,76 @@ class _CoustemCardState extends State<CoustemCard> {
                 ],
               )
             : ElevatedButton(
-          onPressed: () {
-            setState(() {
-              orderPlaced = true;
-            });
-            Navigator.of(
-              context,
-            ).push(MaterialPageRoute(builder: (context) => success()));
-          },
-          child: Text(
-            orderPlaced ? "Booked" : "Get",
-            style: TextStyle(color: const Color.fromARGB(255, 9, 108, 126)),
-          ),
-        ),
+                onPressed: orderPlaced
+                    ? null
+                    : () async {
+                        try {
+                          setState(() {
+                            orderPlaced = true;
+                          });
+
+                          final uid = FirebaseAuth.instance.currentUser!.uid;
+
+                          // بيانات المريض
+                          final userDoc = await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(uid)
+                              .get();
+
+                          final patientData = userDoc.data();
+
+                          // بيانات الدكتور
+                          final doctorDoc = await FirebaseFirestore.instance
+                              .collection('doctors')
+                              .doc(widget.id)
+                              .get();
+
+                          final doctorData = doctorDoc.data();
+
+                          // إنشاء الموعد
+                          final docRef = FirebaseFirestore.instance
+                              .collection('appointments')
+                              .doc('${uid}_${widget.id}');
+
+                          final doc = await docRef.get();
+
+                          if (!doc.exists) {
+                            await docRef.set({
+                              'doctorId': widget.id,
+                              'patientId': uid,
+                              'patientName': patientData?['name'] ?? '',
+                              'doctorName': doctorData?['name'] ?? '',
+                              'status': 'pending',
+                              'createdAt': FieldValue.serverTimestamp(),
+                            });
+                          }
+
+                          if (!mounted) return;
+
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => success()),
+                          );
+                        } catch (e) {
+                          print(e);
+
+                          setState(() {
+                            orderPlaced = false;
+                          });
+
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text('Error: $e')));
+                        }
+                      },
+
+                child: Text(
+                  orderPlaced ? "Booked" : "Get",
+                  style: const TextStyle(
+                    color: Color.fromARGB(255, 9, 108, 126),
+                  ),
+                ),
+              )
       ),
     );
   }

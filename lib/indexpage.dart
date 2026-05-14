@@ -5,7 +5,7 @@ import 'package:healthcare/HomePage.dart';
 import 'package:healthcare/Location.dart';
 import 'package:healthcare/search.dart';
 import 'package:healthcare/setting.dart';
-
+import 'package:healthcare/show_doctor_info.dart';
 import 'About.dart';
 
 class Indexpage extends StatefulWidget {
@@ -18,11 +18,16 @@ class Indexpage extends StatefulWidget {
 class _IndexpageState extends State<Indexpage> {
   int _bottomnav = 0;
 
-  final List<Widget> _pages = [HomePage(), Search(), About()];
+  final List<Widget> _pages = [
+    HomePage(),
+    Search(),
+    show_doctor_info(),
+    About(),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:true,
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         flexibleSpace: Container(
           decoration: BoxDecoration(
@@ -57,10 +62,10 @@ class _IndexpageState extends State<Indexpage> {
               title: Text("home page"),
               // subtitle: Text("this is home page"),
               onTap: () {
-               // Navigator.push(
+                // Navigator.push(
                 //  context,
                 //  MaterialPageRoute(builder: (context) => HomePage()),
-               // );
+                // );
               },
             ),
             ListTile(
@@ -94,6 +99,16 @@ class _IndexpageState extends State<Indexpage> {
               },
             ),
             ListTile(
+              leading: Icon(Icons.medical_information_outlined),
+              title: Text("info"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => show_doctor_info()),
+                );
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.account_circle_outlined),
               title: Text("Account"),
               // subtitle: Text("this is home settings"),
@@ -110,48 +125,45 @@ class _IndexpageState extends State<Indexpage> {
       body: IndexedStack(index: _bottomnav, children: _pages),
 
       bottomNavigationBar: CurvedNavigationBar(
-        
-        
-    color: const Color.fromARGB(255, 39, 146, 150),
-   
-  backgroundColor: Color.fromARGB(255, 45, 161, 165),
-    items: [
-    Icon(Icons.home, color: Colors.white),
-    Icon(Icons.search, color: Colors.white ,),
-    Icon(Icons.account_circle_outlined, color: Colors.white)
-    ],
-      onTap: (index) {
-      setState(() {
-        _bottomnav = index;
-  });
-    },
-  
-  animationCurve: Curves.easeInQuad,
+        color: const Color.fromARGB(255, 39, 146, 150),
+
+        backgroundColor: Color.fromARGB(255, 45, 161, 165),
+        items: [
+          Icon(Icons.home, color: Colors.white),
+          Icon(Icons.search, color: Colors.white),
+          Icon(Icons.medical_information_outlined, color: Colors.white),
+          Icon(Icons.account_circle_outlined, color: Colors.white),
+        ],
+        onTap: (index) {
+          setState(() {
+            _bottomnav = index;
+          });
+        },
+
+        animationCurve: Curves.easeInQuad,
         animationDuration: Duration(milliseconds: 500),
-    height : 50.0,
-    
+        height: 50.0,
       ),
 
-        // currentIndex: _bottomnav,
+      // currentIndex: _bottomnav,
 
-        // onTap: (index) {
-        //   setState(() {
-        //     _bottomnav = index;
-        //   });
-        // },
-        // selectedItemColor: const Color.fromARGB(255, 238, 237, 240),
-        // unselectedItemColor: Colors.grey,
-        
-        // backgroundColor: const Color.fromARGB(255, 38, 136, 139),
-        // items: [
-        //   BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-        //   BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-        //   BottomNavigationBarItem(
-        //     icon: Icon(Icons.account_circle_outlined),
-        //     label: 'Who us',
-        //   ),
-        // ],
-      
+      // onTap: (index) {
+      //   setState(() {
+      //     _bottomnav = index;
+      //   });
+      // },
+      // selectedItemColor: const Color.fromARGB(255, 238, 237, 240),
+      // unselectedItemColor: Colors.grey,
+
+      // backgroundColor: const Color.fromARGB(255, 38, 136, 139),
+      // items: [
+      //   BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+      //   BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+      //   BottomNavigationBarItem(
+      //     icon: Icon(Icons.account_circle_outlined),
+      //     label: 'Who us',
+      //   ),
+      // ],
     );
   }
 }
