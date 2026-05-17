@@ -3,6 +3,7 @@ import 'package:healthcare/HomePage.dart';
 import 'package:healthcare/UserFormPage.dart';
 
 
+
 class success extends StatelessWidget {
   const success({super.key});
 
@@ -74,12 +75,13 @@ class success extends StatelessWidget {
                       backgroundColor: Colors.teal,
                     ),
                     onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const HomePage(),
-                          ),
-                        );
+
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+
                     },
 
                     child: Text(
