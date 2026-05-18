@@ -9,60 +9,76 @@ class BrainDoctors extends StatefulWidget {
 }
 
 class _BrainDoctorsState extends State<BrainDoctors> {
-  
-  @override
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.teal),
+
       body: SafeArea(
         child: SingleChildScrollView(
           child: Stack(
             children: [
+
               Positioned.fill(
-                child: Image.asset("image/new.jpg", fit: BoxFit.cover),
+                child: Image.asset(
+                  "image/new.jpg",
+                  fit: BoxFit.cover,
+                ),
               ),
+
               Column(
                 children: [
-                  Positioned(
-                    child: Image.asset('image/brain.png', width: 80, height: 80),
+
+                  Image.asset(
+                    'image/brain.png',
+                    width: 80,
+                    height: 80,
                   ),
+
                   Text(
-                    'Neurology Clinic',
+                    'عيادة الأعصاب',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
+
                   SizedBox(
                     height: 470,
+
                     child: Column(
                       children: [
+
                         CoustemCard(
                           id: "d1",
-                          title: "Dr.Ali Nasser",
-                          subtitle: "Brain & Nerve Specialist",
+                          title: "د. علي ناصر",
+                          subtitle: "أخصائي الدماغ والأعصاب",
                           imagepath: "image/7.jpg",
                         ),
+
                         CoustemCard(
                           id: "d2",
-                          title: "Dr.Mazen Ali",
-                          subtitle: "Neurology Consultant",
+                          title: "د. مازن علي",
+                          subtitle: "استشاري طب الأعصاب",
                           imagepath: "image/9.jpg",
                         ),
+
                         CoustemCard(
                           id: "d3",
-                          title: "Dr.Neda Rashed",
-                          subtitle: "Nerve Disorder Expert",
+                          title: "د. ندى راشد",
+                          subtitle: "خبيرة اضطرابات الأعصاب",
                           imagepath: "image/10.jpg",
                         ),
+
                         CoustemCard(
                           id: "d4",
-                          title: "Dr.Noor Ahmed ",
-                          subtitle: "Stroke Specialist",
+                          title: "د. نور أحمد",
+                          subtitle: "أخصائية السكتات الدماغية",
                           imagepath: "image/11.jpg",
                         ),
+
                       ],
                     ),
                   ),

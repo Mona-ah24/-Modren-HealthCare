@@ -4,15 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:healthcare/TrackAppointmentScreen.dart';
 import 'HomePage.dart';
 
-
 class UserFormPage extends StatefulWidget {
   final String id;
   const UserFormPage({
     super.key,
     required this.id,
-  
   });
-  
 
   @override
   State<UserFormPage> createState() => _UserFormPageState();
@@ -28,29 +25,6 @@ class _UserFormPageState extends State<UserFormPage> {
 
   String? _gender;
 
-  // هذا الكود يوضع داخل دالة الحجز في تطبيق الموبايل
-// Future<void> bookAppointment(String selectedDoctorId, String patientName) async {
-//   try {
-//     await FirebaseFirestore.instance.collection('appointments').add({
-//       // 1. أهم حقل: المعرف الخاص بالطبيب الذي اختاره المريض
-//       'doctorId': selectedDoctorId, 
-      
-//       // 2. بيانات المريض
-//       'patientName': patientName,
-//       'patientId': FirebaseAuth.instance.currentUser!.uid,
-      
-//       // 3. حالة الحجز الافتراضية
-//       'status': 'pending',
-      
-//       // 4. وقت الحجز (ضروري للترتيب الذي وضعناه في الويب)
-//       'createdAt': FieldValue.serverTimestamp(), 
-//     });
-    
-//     print("تم الحجز بنجاح!");
-//   } catch (e) {
-//     print("خطأ في الحجز: $e");
-//   }
-// }
   Future<void> _submitForm() async {
     try {
       if (_formKey.currentState!.validate()) {
@@ -63,13 +37,12 @@ class _UserFormPageState extends State<UserFormPage> {
           'createdAt': FieldValue.serverTimestamp(),
         };
 
-        // id للـ user (لو مستخدم مسجل)
         final user = FirebaseAuth.instance.currentUser;
         if (user == null) {
           if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
-              content: Text('Please login first'),
+              content: Text('يرجى تسجيل الدخول أولاً'),
               backgroundColor: Colors.red,
             ),
           );
@@ -83,7 +56,6 @@ class _UserFormPageState extends State<UserFormPage> {
             .doc(uid)
             .set(userData);
 
-
         if (!mounted) return;
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -94,7 +66,6 @@ class _UserFormPageState extends State<UserFormPage> {
           ),
         );
 
-        // تنظيف الحقول
         _nameController.clear();
         _phoneController.clear();
         _ageController.clear();
@@ -103,15 +74,9 @@ class _UserFormPageState extends State<UserFormPage> {
         setState(() {
           _gender = null;
         });
-        
-        // الانتقال للصفحة الرئيسية
+
         Future.delayed(const Duration(seconds: 1), () {
           if (!mounted) return;
-
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(builder: (_) => const  TrackAppointmentScreen(appointmentId: '${uid}_${widget.id}')),
-          // );
         });
       }
     } catch (e) {
@@ -119,7 +84,7 @@ class _UserFormPageState extends State<UserFormPage> {
     }
   }
 
-   @override
+  @override
   void dispose() {
     _nameController.dispose();
     _phoneController.dispose();
@@ -132,7 +97,7 @@ class _UserFormPageState extends State<UserFormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Form'),
+        title: const Text('نموذج المستخدم'),
         automaticallyImplyLeading: false,
       ),
       body: Padding(
@@ -141,16 +106,16 @@ class _UserFormPageState extends State<UserFormPage> {
           key: _formKey,
           child: ListView(
             children: [
-              // NAME
+
               TextFormField(
                 controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'الاسم'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'الاسم مطلوب';
                   }
                   if (value.length < 3) {
-                    return '3 أحرف على الأقل';
+                    return 'يجب أن يكون 3 أحرف على الأقل';
                   }
                   return null;
                 },
@@ -158,17 +123,16 @@ class _UserFormPageState extends State<UserFormPage> {
 
               const SizedBox(height: 12),
 
-              // PHONE
               TextFormField(
                 controller: _phoneController,
-                decoration: const InputDecoration(labelText: 'Phone'),
+                decoration: const InputDecoration(labelText: 'رقم الهاتف'),
                 keyboardType: TextInputType.phone,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'الهاتف مطلوب';
+                    return 'رقم الهاتف مطلوب';
                   }
                   if (value.length < 9) {
-                    return '9 أرقام على الأقل';
+                    return 'يجب أن يحتوي على 9 أرقام على الأقل';
                   }
                   return null;
                 },
@@ -176,10 +140,9 @@ class _UserFormPageState extends State<UserFormPage> {
 
               const SizedBox(height: 12),
 
-              // AGE
               TextFormField(
                 controller: _ageController,
-                decoration: const InputDecoration(labelText: 'Age'),
+                decoration: const InputDecoration(labelText: 'العمر'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -195,13 +158,12 @@ class _UserFormPageState extends State<UserFormPage> {
 
               const SizedBox(height: 12),
 
-              // GENDER
               DropdownButtonFormField<String>(
                 value: _gender,
-                decoration: const InputDecoration(labelText: 'Gender'),
+                decoration: const InputDecoration(labelText: 'الجنس'),
                 items: const [
-                  DropdownMenuItem(value: 'Male', child: Text('Male')),
-                  DropdownMenuItem(value: 'Female', child: Text('Female')),
+                  DropdownMenuItem(value: 'Male', child: Text('ذكر')),
+                  DropdownMenuItem(value: 'Female', child: Text('أنثى')),
                 ],
                 onChanged: (val) {
                   setState(() {
@@ -210,7 +172,7 @@ class _UserFormPageState extends State<UserFormPage> {
                 },
                 validator: (value) {
                   if (value == null) {
-                    return 'اختر الجنس';
+                    return 'يرجى اختيار الجنس';
                   }
                   return null;
                 },
@@ -218,17 +180,16 @@ class _UserFormPageState extends State<UserFormPage> {
 
               const SizedBox(height: 12),
 
-              // EMAIL
               TextFormField(
                 controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
+                decoration: const InputDecoration(labelText: 'البريد الإلكتروني'),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'البريد مطلوب';
+                    return 'البريد الإلكتروني مطلوب';
                   }
                   if (!value.contains('@')) {
-                    return 'بريد غير صحيح';
+                    return 'بريد إلكتروني غير صحيح';
                   }
                   return null;
                 },
@@ -236,68 +197,30 @@ class _UserFormPageState extends State<UserFormPage> {
 
               const SizedBox(height: 20),
 
-              // SUBMIT BUTTON
               ElevatedButton(
-                onPressed: 
-                    () async {
-                        try {
-                          _submitForm();
-                          final uid = FirebaseAuth.instance.currentUser!.uid;
+                onPressed: () async {
+                  try {
+                    _submitForm();
 
-                          // بيانات المريض
-                          // final userDoc = await FirebaseFirestore.instance
-                          //     .collection('users')
-                          //     .doc(uid)
-                          //     .get();
+                    final uid = FirebaseAuth.instance.currentUser!.uid;
 
-                          // final patientData = userDoc.data();
-
-                          // // بيانات الدكتور
-                          // final doctorDoc = await FirebaseFirestore.instance
-                          //     .collection('doctors')
-                          //     .doc(widget.id)
-                          //     .get();
-
-                          // final doctorData = doctorDoc.data();
-
-                          // إنشاء الموعد
-                          // final docRef = FirebaseFirestore.instance
-                          //     .collection('appointments')
-                          //     .doc('${uid}_${widget.id}');
-
-                          // final doc = await docRef.get();
-
-                          // if (!doc.exists) {
-                          //   await docRef.set({
-                          //     'doctorId': widget.id,
-                          //     'patientId': uid,
-                          //     'patientName': patientData?['name'] ?? '',
-                          //     'doctorName': doctorData?['name'] ?? '',
-                          //     'status': 'pending',
-                          //     'createdAt': FieldValue.serverTimestamp(),
-                          //   });
-                          // }
-
-                          // if (!mounted) return;
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) =>TrackAppointmentScreen(appointmentId: '${uid}_${widget.id}')),
-                          );
-                        } catch (e) {
-                          print(e);
-
-
-                          ScaffoldMessenger.of(
-                            context,
-                          ).showSnackBar(SnackBar(content: Text('Error: $e')));
-                          
-                        }
-                      },
-
-                child: Text(
-                   "Get",
-                  style: const TextStyle(
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TrackAppointmentScreen(
+                          appointmentId: '${uid}_${widget.id}',
+                        ),
+                      ),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('خطأ: $e')),
+                    );
+                  }
+                },
+                child: const Text(
+                  "إرسال",
+                  style: TextStyle(
                     color: Color.fromARGB(255, 9, 108, 126),
                   ),
                 ),

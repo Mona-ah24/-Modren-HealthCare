@@ -11,7 +11,6 @@ class setting extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage("image/new.jpg"),
-
               fit: BoxFit.cover,
             ),
           ),
@@ -19,51 +18,70 @@ class setting extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 10,
         iconTheme: IconThemeData(
-          color: Colors.white, // يخلي الخطوط الثلاثة حق الدراور باللون الأبيض
-          size: 28, //   حجم الأيقونة
-          //backgroundColor: Colors.white.withOpacity(30)
+          color: Colors.white,
+          size: 28,
         ),
       ),
+
       body: Stack(
         children: [
+
           Positioned.fill(
-            child: Image.asset("image/new.jpg", fit: BoxFit.cover),
+            child: Image.asset(
+              "image/new.jpg",
+              fit: BoxFit.cover,
+            ),
           ),
+
           Column(
             children: [
+
               SizedBox(height: 25),
-              Icon(Icons.settings, size: 50, color: Colors.white),
+
+              Icon(
+                Icons.settings,
+                size: 50,
+                color: Colors.white,
+              ),
+
               Text(
-                'Setting',
+                'الإعدادات',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
+
               SizedBox(height: 25),
+
               ListTile(
                 leading: Icon(Icons.language, color: Colors.white),
-                title: Text('Language', style: TextStyle(color: Colors.white)),
-                // subtitle: Text("this is home settings"),
+                title: Text(
+                  'اللغة',
+                  style: TextStyle(color: Colors.white),
+                ),
                 onTap: () {
                   print("Language");
                 },
               ),
+
               ListTile(
                 leading: Icon(Icons.accessibility_new, color: Colors.white),
-                title: Text('Access', style: TextStyle(color: Colors.white)),
-                // subtitle: Text("this is home settings"),
+                title: Text(
+                  'إمكانية الوصول',
+                  style: TextStyle(color: Colors.white),
+                ),
                 onTap: () {
                   print("Access");
                 },
               ),
+
               ListTile(
                 leading: Icon(Icons.question_mark, color: Colors.white),
                 title: Text(
-                  'Help & Data',
+                  'المساعدة والبيانات',
                   style: TextStyle(color: Colors.white),
                 ),
-                // subtitle: Text("this is home settings"),
                 onTap: () {
                   print("Help & Data");
                 },

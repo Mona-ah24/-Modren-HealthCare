@@ -9,13 +9,11 @@ class HeartDoctors extends StatefulWidget {
 }
 
 class _HeartDoctorsState extends State<HeartDoctors> {
-  // Define id5 before using it in CoustemCard
-  
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.teal),
+
       body: SafeArea(
         child: SingleChildScrollView(
           child: Stack(
@@ -23,45 +21,50 @@ class _HeartDoctorsState extends State<HeartDoctors> {
               Positioned.fill(
                 child: Image.asset("image/new.jpg", fit: BoxFit.cover),
               ),
+
               Column(
                 children: [
-                  Positioned(
-                    child: Image.asset('image/heart.png', width: 80, height: 80),
-                  ),
+                  Image.asset('image/heart.png', width: 80, height: 80),
+
                   Text(
-                    'Heart Clinic',
+                    'عيادة القلب',
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
+
                   SizedBox(
                     height: 470,
+
                     child: Column(
                       children: [
                         CoustemCard(
                           id: "id5",
-                          title: "Dr.Ahmed Abdollah",
-                          subtitle: "Cardiology Consultant",
+                          title: "د. أحمد عبدالله",
+                          subtitle: "استشاري أمراض القلب",
                           imagepath: "image/12.jpg",
                         ),
+
                         CoustemCard(
                           id: "id6",
-                          title: "Dr.Sami Hassan",
-                          subtitle: "Interventional Cardiologist",
+                          title: "د. سامي حسن",
+                          subtitle: "أخصائي قسطرة القلب",
                           imagepath: "image/13.jpg",
                         ),
+
                         CoustemCard(
                           id: "id7",
-                          title: "Dr.Omer Badr ",
-                          subtitle: "Chest Pain Specialist",
+                          title: "د. عمر بدر",
+                          subtitle: "أخصائي آلام الصدر",
                           imagepath: "image/14.jpg",
                         ),
+
                         CoustemCard(
                           id: "id8",
-                          title: "Dr.Zainab Ahmed",
-                          subtitle: "Valve Disease Expert",
+                          title: "د. زينب أحمد",
+                          subtitle: "خبيرة أمراض صمامات القلب",
                           imagepath: "image/16.jpg",
                         ),
                       ],

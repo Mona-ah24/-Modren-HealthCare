@@ -13,58 +13,58 @@ class _SearchState extends State<Search> {
 
   List<Map<String, String>> doctors = [
     {
-      "title": "Dr.Ali Nasser",
-      "subtitle": "Brain & Nerve Specialist",
+      "title": "د. علي ناصر",
+      "subtitle": "أخصائي الدماغ والأعصاب",
       "image": "image/7.jpg",
     },
     {
-      "title": "Dr.Ahmed Abdollah",
-      "subtitle": "Cardiology Consultant",
+      "title": "د. أحمد عبدالله",
+      "subtitle": "استشاري أمراض القلب",
       "image": "image/12.jpg",
     },
     {
-      "title": "Dr.Mona Ahmed",
-      "subtitle": "Cosmetic Dentistry Expert",
+      "title": "د. منى أحمد",
+      "subtitle": "خبيرة تجميل الأسنان",
       "image": "image/17.jpg",
     },
     {
-      "title": "Dr.Sami Omer",
-      "subtitle": "Interventional Cardiologist",
+      "title": "د. سامي عمر",
+      "subtitle": "أخصائي قسطرة القلب",
       "image": "image/13.jpg",
     },
     {
-      "title": "Dr.Noor Hassan",
-      "subtitle": "Chest Pain Specialist",
+      "title": "د. نور حسن",
+      "subtitle": "أخصائي آلام الصدر",
       "image": "image/14.jpg",
     },
     {
-      "title": "Dr.Zainab Ahmed",
-      "subtitle": "Valve Disease Expert",
+      "title": "د. زينب أحمد",
+      "subtitle": "خبيرة أمراض صمامات القلب",
       "image": "image/16.jpg",
     },
     {
-      "title": "Dr.Hadi Yaser",
-      "subtitle": "General Dentist",
+      "title": "د. هادي ياسر",
+      "subtitle": "طبيب أسنان عام",
       "image": "image/15.jpg",
     },
     {
-      "title": "Dr.Saleh Salem",
-      "subtitle": "Oral Surgeon",
+      "title": "د. صالح سالم",
+      "subtitle": "جراح فم وأسنان",
       "image": "image/18.jpg",
     },
     {
-      "title": "Dr.Mazen Ali",
-      "subtitle": "Neurology Consultant",
+      "title": "د. مازن علي",
+      "subtitle": "استشاري طب الأعصاب",
       "image": "image/9.jpg",
     },
     {
-      "title": "Dr.Neda Rashed",
-      "subtitle": "Nerve Disorder Expert",
+      "title": "د. ندى راشد",
+      "subtitle": "خبيرة اضطرابات الأعصاب",
       "image": "image/10.jpg",
     },
     {
-      "title": "Dr.Noor Ahmed",
-      "subtitle": "Stroke Specialist",
+      "title": "د. نور أحمد",
+      "subtitle": "أخصائية السكتات الدماغية",
       "image": "image/11.jpg",
     },
   ];
@@ -98,7 +98,6 @@ class _SearchState extends State<Search> {
     });
   }
 
-  
   void clearSearch() {
     searchController.clear();
 
@@ -110,24 +109,32 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset:true,
+      resizeToAvoidBottomInset: true,
+
       body: Stack(
         children: [
+
           Positioned.fill(
             child: Image.asset("image/new.jpg", fit: BoxFit.cover),
           ),
+
           Container(
             padding: EdgeInsets.all(30),
+
             child: Column(
               children: [
+
                 TextField(
                   autofocus: true,
                   controller: searchController,
                   onChanged: searchDoctor,
+
                   decoration: InputDecoration(
-                    hintText: "Search doctor...",
+                    hintText: "ابحث عن طبيب...",
                     prefixIcon: Icon(Icons.search),
-                    suffixIcon: searchController.text.isNotEmpty ? IconButton(
+
+                    suffixIcon: searchController.text.isNotEmpty
+                        ? IconButton(
                             icon: Icon(Icons.close),
                             onPressed: clearSearch,
                           )
@@ -137,6 +144,7 @@ class _SearchState extends State<Search> {
                       borderRadius: BorderRadius.circular(20),
                       borderSide: BorderSide.none,
                     ),
+
                     fillColor: Color.fromARGB(255, 245, 239, 239),
                     filled: true,
                   ),
@@ -145,17 +153,18 @@ class _SearchState extends State<Search> {
                 SizedBox(height: 15),
 
                 Expanded(
-                  child: filteredDoctors.isEmpty ? Center(
+                  child: filteredDoctors.isEmpty
+                      ? Center(
                           child: Text(
-                            "No Results Found",
+                            "لا توجد نتائج",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white
+                              color: Colors.white,
                             ),
                           ),
                         )
-                          : ListView.builder(
+                      : ListView.builder(
                           itemCount: filteredDoctors.length,
                           itemBuilder: (context, index) {
                             return CoustemCard(

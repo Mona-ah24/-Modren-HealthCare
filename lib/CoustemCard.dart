@@ -158,7 +158,7 @@ class _CoustemCardState extends State<CoustemCard> {
                       },
 
                 child: Text(
-                  orderPlaced ? "Booked" : "Get",
+                  orderPlaced ? "Booked" : "طلب",
                   style: const TextStyle(
                     color: Color.fromARGB(255, 9, 108, 126),
                   ),

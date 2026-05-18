@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:healthcare/indexpage.dart';
 class TrackAppointmentScreen extends StatelessWidget {
   final String appointmentId; // نمرر الـ ID الخاص بالحجز (مثلاً 'uid_id8')
 
@@ -9,10 +9,22 @@ class TrackAppointmentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('تتبع حالة الحجز'),
-        backgroundColor: const Color.fromARGB(255, 9, 108, 126),
-      ),
+      appBar:AppBar(
+  title: const Text('تتبع حالة الحجز'),
+  backgroundColor: const Color.fromARGB(255, 9, 108, 126),
+
+  leading: IconButton(
+    icon: const Icon(Icons.arrow_back),
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const Indexpage(),
+        ),
+      );
+    },
+  ),
+),
       body: StreamBuilder<DocumentSnapshot>(
         // نستمع لوثيقة هذا الحجز بعينه لمعرفة حالته اللحظية
         stream: FirebaseFirestore.instance
@@ -65,6 +77,7 @@ class TrackAppointmentScreen extends StatelessWidget {
                   isActive: status == 'completed',
                   isCompleted: status == 'completed',
                 ),
+               
               ],
             ),
           );

@@ -49,7 +49,7 @@ class _LoginState extends State<Login> {
 
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text("Login Successfully")));
+      ).showSnackBar(const SnackBar(content: Text("تم تسجيل الدخول بنجاح")));
 
       Navigator.pushReplacement(
         context,
@@ -84,12 +84,13 @@ class _LoginState extends State<Login> {
     return Scaffold(
       body: Stack(
         children: [
+
           Positioned.fill(
             child: Image.asset('image/new.jpg', fit: BoxFit.cover),
           ),
 
           Padding(
-            padding: EdgeInsetsGeometry.only(left: 80 ,right: 80),
+            padding: EdgeInsetsGeometry.only(left: 80, right: 80),
             child: Image.asset("image/30.png", width: 200, height: 200),
           ),
 
@@ -116,10 +117,12 @@ class _LoginState extends State<Login> {
 
                 child: Column(
                   children: [
+
                     Form(
                       key: _formKey,
                       child: Column(
                         children: <Widget>[
+
                           const SizedBox(height: 60),
 
                           // EMAIL
@@ -137,7 +140,7 @@ class _LoginState extends State<Login> {
                               controller: emailController,
                               style: const TextStyle(color: Colors.white),
                               decoration: InputDecoration(
-                                labelText: 'E-Mail',
+                                labelText: 'البريد الإلكتروني',
                                 labelStyle: const TextStyle(
                                   color: Colors.white,
                                 ),
@@ -153,7 +156,7 @@ class _LoginState extends State<Login> {
                                     !RegExp(
                                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                                     ).hasMatch(value)) {
-                                  return 'Enter a valid email!';
+                                  return 'أدخل بريد إلكتروني صحيح';
                                 }
                                 return null;
                               },
@@ -178,7 +181,7 @@ class _LoginState extends State<Login> {
                               style: const TextStyle(color: Colors.white),
                               obscureText: true,
                               decoration: InputDecoration(
-                                labelText: 'Password',
+                                labelText: 'كلمة المرور',
                                 labelStyle: const TextStyle(
                                   color: Colors.white,
                                 ),
@@ -189,7 +192,7 @@ class _LoginState extends State<Login> {
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Enter a valid password!';
+                                  return 'أدخل كلمة مرور صحيحة';
                                 }
                                 return null;
                               },
@@ -206,7 +209,7 @@ class _LoginState extends State<Login> {
                           child: TextButton(
                             onPressed: () {},
                             child: const Text(
-                              "forget password?",
+                              "نسيت كلمة المرور؟",
                               style: TextStyle(
                                 color: Color.fromARGB(221, 16, 92, 122),
                               ),
@@ -236,7 +239,7 @@ class _LoginState extends State<Login> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                           : const Text(
-                              'Sign in',
+                              'تسجيل الدخول',
                               style: TextStyle(
                                 color: Color.fromARGB(221, 16, 92, 122),
                               ),
@@ -246,11 +249,11 @@ class _LoginState extends State<Login> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text("Don't have an account"),
+                        const Text("ليس لديك حساب؟"),
                         TextButton(
                           onPressed: navigatorToSignUp,
                           child: const Text(
-                            'Sign up',
+                            'إنشاء حساب',
                             style: TextStyle(
                               color: Color.fromARGB(221, 16, 92, 122),
                             ),

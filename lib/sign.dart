@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:healthcare/login.dart';
 import 'auth_service.dart';
-//import 'package:shared_preferences/shared_preferences.dart';
 
 class Sign extends StatefulWidget {
   const Sign({super.key});
@@ -11,20 +10,19 @@ class Sign extends StatefulWidget {
 }
 
 class _SignState extends State<Sign> {
-  // TextEditingController _Name=TextEditingController();
   final emailController = TextEditingController();
   final passController = TextEditingController();
   final nameController = TextEditingController();
- 
+
   var formKey = GlobalKey<FormState>();
   var isLoading = false;
+
   bool isValidEmail(String email) {
     return RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(email);
   }
 
   bool isStrongPassword(String password) {
-    return RegExp(
-        r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$')
+    return RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$')
         .hasMatch(password);
   }
 
@@ -43,9 +41,9 @@ class _SignState extends State<Sign> {
         password: passController.text.trim(),
       );
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Account created successfully")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("تم إنشاء الحساب بنجاح")),
+      );
 
       Navigator.pushReplacement(
         context,
@@ -57,9 +55,9 @@ class _SignState extends State<Sign> {
         ),
       );
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     }
 
     setState(() {
@@ -68,11 +66,11 @@ class _SignState extends State<Sign> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
+
           Positioned.fill(
             child: Image.asset('image/new.jpg', fit: BoxFit.cover),
           ),
@@ -81,6 +79,7 @@ class _SignState extends State<Sign> {
             padding: EdgeInsetsGeometry.only(left: 80),
             child: Image.asset("image/30.png", width: 200, height: 200),
           ),
+
           Center(
             child: Padding(
               padding: const EdgeInsets.only(top: 240),
@@ -88,7 +87,7 @@ class _SignState extends State<Sign> {
                 width: 400,
                 height: 400,
                 decoration: BoxDecoration(
-                  color: Colors.white, // أبيض مع شفافية
+                  color: Colors.white,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(170),
                     topRight: Radius.circular(170),
@@ -104,11 +103,15 @@ class _SignState extends State<Sign> {
 
                 child: Column(
                   children: [
+
                     Form(
                       key: formKey,
                       child: Column(
                         children: <Widget>[
+
                           SizedBox(height: 60),
+
+                          // NAME
                           Container(
                             width: 250,
                             height: 50,
@@ -116,41 +119,33 @@ class _SignState extends State<Sign> {
                               borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
                                 image: AssetImage("image/new.jpg"),
-
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            child: 
-                            TextFormField(
+                            child: TextFormField(
                               controller: nameController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
+                                labelText: 'الاسم',
+                                hintText: 'أدخل اسمك',
                                 labelStyle: TextStyle(color: Colors.white),
-                                labelText: 'Name',
-                                hintText: 'Enter your Name',
-                                //filled: true,
-                                //fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40),
                                   borderSide: BorderSide.none,
                                 ),
                               ),
-                              // controller: _Name,
-                              keyboardType: TextInputType.emailAddress,
-                              onFieldSubmitted: (value) {
-                                //Validator
-                              },
                               validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Enter a valid Name!';
+                                if (value == null || value.isEmpty) {
+                                  return 'أدخل اسم صحيح';
                                 }
                                 return null;
                               },
                             ),
                           ),
 
-                          //styling
                           SizedBox(height: 10),
+
+                          // EMAIL
                           Container(
                             width: 250,
                             height: 50,
@@ -158,7 +153,6 @@ class _SignState extends State<Sign> {
                               borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
                                 image: AssetImage("image/new.jpg"),
-
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -166,33 +160,30 @@ class _SignState extends State<Sign> {
                               controller: emailController,
                               style: TextStyle(color: Colors.white),
                               decoration: InputDecoration(
-                                labelText: 'E-Mail',
+                                labelText: 'البريد الإلكتروني',
                                 labelStyle: TextStyle(color: Colors.white),
-                                //filled: true,
-                                //fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40),
                                   borderSide: BorderSide.none,
                                 ),
                               ),
                               keyboardType: TextInputType.emailAddress,
-                              onFieldSubmitted: (value) {
-                                //Validator
-                              },
                               validator: (value) {
-                                if (value!.isEmpty ||
+                                if (value == null ||
+                                    value.isEmpty ||
                                     !RegExp(
                                       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
                                     ).hasMatch(value)) {
-                                  return 'Enter a valid email!';
+                                  return 'أدخل بريد إلكتروني صحيح';
                                 }
                                 return null;
                               },
                             ),
                           ),
 
-                          //box styling
                           SizedBox(height: 10),
+
+                          // PASSWORD
                           Container(
                             width: 250,
                             height: 50,
@@ -200,58 +191,52 @@ class _SignState extends State<Sign> {
                               borderRadius: BorderRadius.circular(20),
                               image: DecorationImage(
                                 image: AssetImage("image/new.jpg"),
-
                                 fit: BoxFit.cover,
                               ),
                             ),
                             child: TextFormField(
                               controller: passController,
                               style: TextStyle(color: Colors.white),
+                              obscureText: true,
                               decoration: InputDecoration(
-                                // iconColor: Colors.white,
+                                labelText: 'كلمة المرور',
                                 labelStyle: TextStyle(color: Colors.white),
-                                labelText: 'Password',
-                                //filled: true,
-                                //fillColor: Colors.white,
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(40),
                                   borderSide: BorderSide.none,
                                 ),
                               ),
-                              keyboardType: TextInputType.emailAddress,
-                              onFieldSubmitted: (value) {},
-                              obscureText: true,
                               validator: (value) {
-                                if (value!.isEmpty) {
-                                  return 'Enter a valid password!';
+                                if (value == null || value.isEmpty) {
+                                  return 'أدخل كلمة مرور صحيحة';
                                 }
                                 return null;
                               },
                             ),
                           ),
 
-                          //text input
                           SizedBox(height: 50),
                         ],
                       ),
                     ),
-                    // ElevatedButton(onPressed: _submit, child: Text('SIGN IN')),
+
                     ElevatedButton(
                       style: ButtonStyle(
                         shadowColor: WidgetStateProperty.all(
-                        const Color.fromARGB(221, 16, 92, 122), 
+                          const Color.fromARGB(221, 16, 92, 122),
                         ),
                         elevation: WidgetStateProperty.all(10),
                       ),
-                    onPressed: () async {
+                      onPressed: () async {
                         await signUp();
                       },
-                    child: Text('Sign up',
-                      style: TextStyle(
-                        color: const Color.fromARGB(221, 16, 92, 122),
-                      )
-                    )
-                  ),
+                      child: Text(
+                        'إنشاء حساب',
+                        style: TextStyle(
+                          color: const Color.fromARGB(221, 16, 92, 122),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

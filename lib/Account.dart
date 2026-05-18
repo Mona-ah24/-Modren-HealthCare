@@ -11,7 +11,6 @@ class Account extends StatelessWidget {
           decoration: BoxDecoration(
             image: DecorationImage(
               image: AssetImage("image/new.jpg"),
-
               fit: BoxFit.cover,
             ),
           ),
@@ -19,51 +18,88 @@ class Account extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 10,
         iconTheme: IconThemeData(
-          color: Colors.white, // يخلي الخطوط الثلاثة حق الدراور باللون الأبيض
-          size: 28, //   حجم الأيقونة
-          //backgroundColor: Colors.white.withOpacity(30)
+          color: Colors.white,
+          size: 28,
         ),
       ),
+
       body: Stack(
         children: [
+
           Positioned.fill(
-            child: Image.asset("image/new.jpg", fit: BoxFit.cover),
+            child: Image.asset(
+              "image/new.jpg",
+              fit: BoxFit.cover,
+            ),
           ),
+
           Center(
             child: Column(
               children: [
+
                 SizedBox(height: 20),
-                Icon(Icons.account_circle, color: Colors.white, size: 50),
+
+                Icon(
+                  Icons.account_circle,
+                  color: Colors.white,
+                  size: 50,
+                ),
+
                 Text(
-                  'Modify',
+                  'تعديل الحساب',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
+
                 SizedBox(height: 20),
+
                 ListTile(
-                  leading: Icon(Icons.account_circle, color: Colors.white),
-                  title: Text('Name', style: TextStyle(color: Colors.white)),
-                  // subtitle: Text("this is home settings"),
+                  leading: Icon(
+                    Icons.account_circle,
+                    color: Colors.white,
+                  ),
+
+                  title: Text(
+                    'الاسم',
+                    style: TextStyle(color: Colors.white),
+                  ),
+
                   onTap: () {
-                    print("Name");
+                    print("الاسم");
                   },
                 ),
+
                 ListTile(
-                  leading: Icon(Icons.email_outlined, color: Colors.white),
-                  title: Text('Email', style: TextStyle(color: Colors.white)),
-                  // subtitle: Text("this is home settings"),
+                  leading: Icon(
+                    Icons.email_outlined,
+                    color: Colors.white,
+                  ),
+
+                  title: Text(
+                    'البريد الإلكتروني',
+                    style: TextStyle(color: Colors.white),
+                  ),
+
                   onTap: () {
-                    print("Email");
+                    print("البريد الإلكتروني");
                   },
                 ),
+
                 ListTile(
-                  leading: Icon(Icons.phone_android, color: Colors.white),
-                  title: Text('Phone', style: TextStyle(color: Colors.white)),
-                  // subtitle: Text("this is home settings"),
+                  leading: Icon(
+                    Icons.phone_android,
+                    color: Colors.white,
+                  ),
+
+                  title: Text(
+                    'رقم الهاتف',
+                    style: TextStyle(color: Colors.white),
+                  ),
+
                   onTap: () {
-                    print("Phone");
+                    print("رقم الهاتف");
                   },
                 ),
               ],

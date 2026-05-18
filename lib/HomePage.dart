@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   void _Navgitor1() {
     Navigator.push(
       context,
@@ -39,38 +40,24 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Stack(
         children: [
+
           Positioned.fill(
             child: Image.asset('image/new.jpg', fit: BoxFit.cover),
           ),
 
           Padding(
             padding: const EdgeInsets.all(8.0),
+
             child: Flexible(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                //mainAxisAlignment: MainAxisAlignment.start,
+
                 children: [
-                  // Image.asset('image/30.png', width: 50, height: 50),
-                  //صورة الشعار
-                  // Positioned(left: 100,top: 100,child:
-                  // Container(
-                  //   width: 300,
-                  //   height: 30,
-                  //   child: TextField(
-                  //     decoration: InputDecoration(
-                  //       icon: Icon(Icons.search),
-                  //         filled: true,
-                  //         fillColor: Colors.white70,
-                  //         border: OutlineInputBorder(
-                  //           borderRadius: BorderRadius.circular(40),
-                  //           borderSide: BorderSide.none,
-                  //         )
-                  //     ),
-                  //   ),),
-                  // )
+
                   SizedBox(height: 15),
+
                   Text(
-                    'Categories',
+                    'التصنيفات',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Colors.white,
@@ -78,12 +65,16 @@ class _HomePageState extends State<HomePage> {
                       fontSize: 20,
                     ),
                   ),
+
                   SizedBox(height: 15),
+
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
+
                         SizedBox(width: 10),
+
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -92,7 +83,6 @@ class _HomePageState extends State<HomePage> {
                           child: Container(
                             width: 70,
                             height: 70,
-
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               image: DecorationImage(
@@ -100,19 +90,17 @@ class _HomePageState extends State<HomePage> {
                                 fit: BoxFit.fitWidth,
                               ),
                               borderRadius: BorderRadius.circular(20),
-                              //color: Colors.white,
-
-                              // boxShadow:[BoxShadow(color:Colors.white70,blurRadius: 10 ),]
                             ),
                             child: Image.asset('image/heart.png'),
                           ),
                         ),
+
                         SizedBox(width: 10),
+
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,
                           ),
-
                           onPressed: _Navgitor3,
                           child: Container(
                             width: 70,
@@ -124,13 +112,13 @@ class _HomePageState extends State<HomePage> {
                                 fit: BoxFit.fitWidth,
                               ),
                               borderRadius: BorderRadius.circular(20),
-                              //color: Colors.white,
-                              // boxShadow:[BoxShadow(color:Colors.white70,blurRadius: 10 ),]
                             ),
                             child: Image.asset('image/tooth.png'),
                           ),
                         ),
+
                         SizedBox(width: 10),
+
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -146,15 +134,11 @@ class _HomePageState extends State<HomePage> {
                                 fit: BoxFit.fitWidth,
                               ),
                               borderRadius: BorderRadius.circular(20),
-                              // color: Colors.white,
-
-                              //boxShadow: [
-                              //  BoxShadow(color: Colors.white70, blurRadius: 10),
-                              // ],
                             ),
                             child: Image.asset('image/brain.png'),
                           ),
                         ),
+
                         SizedBox(width: 10),
 
                         ElevatedButton(
@@ -172,16 +156,13 @@ class _HomePageState extends State<HomePage> {
                                 fit: BoxFit.fitWidth,
                               ),
                               borderRadius: BorderRadius.circular(20),
-                              //color: Colors.white,
-
-                              //boxShadow: [
-                              //  BoxShadow(color: Colors.white70, blurRadius: 10),
-                              //],
                             ),
                             child: Image.asset('image/arms.png'),
                           ),
                         ),
+
                         SizedBox(width: 10),
+
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             padding: EdgeInsets.zero,
@@ -197,11 +178,6 @@ class _HomePageState extends State<HomePage> {
                                 fit: BoxFit.fitWidth,
                               ),
                               borderRadius: BorderRadius.circular(20),
-                              //color: Colors.white,
-
-                              // boxShadow: [
-                              // BoxShadow(color: Colors.white70, blurRadius: 10),
-                              // ],
                             ),
                             child: Image.asset('image/blood.png'),
                           ),
@@ -209,15 +185,18 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+
                   SizedBox(height: 15),
+
                   Text(
-                    'Bast Doctors',
+                    'أفضل الأطباء',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
                   ),
+
                   SizedBox(height: 15),
 
                   Container(
@@ -228,49 +207,40 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // SizedBox(width: 10,),
-                          // Card(
-                          //   color: Colors.white70,
-                          //
-                          // )
+
                           SizedBox(width: 10),
+
                           CoustemCard(
                             id: "id8",
-                            title: "Dr.Zainab Ahmed",
-                            subtitle: "Valve Disease Expert",
+                            title: "د. زينب أحمد",
+                            subtitle: "خبيرة أمراض صمامات القلب",
                             imagepath: "image/16.jpg",
                           ),
 
                           SizedBox(width: 10),
+
                           CoustemCard(
                             id: "id5",
-                            title: "Dr.Ahmed Abdollah",
-                            subtitle: "Cardiology Consultant",
+                            title: "د. أحمد عبدالله",
+                            subtitle: "استشاري أمراض القلب",
                             imagepath: "image/12.jpg",
                           ),
+
                           SizedBox(width: 10),
-                          /*Container(
-                              width: 350,
-                              alignment: Alignment.center,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: [
-                                  BoxShadow(color: Colors.white70, blurRadius: 10),
-                                ],
-                              )*/
-                          //child:
+
                           CoustemCard(
                             id: "id10",
-                            title: "Dr.Mona Ahmed",
-                            subtitle: "Cosmetic Dentistry Expert",
+                            title: "د. منى أحمد",
+                            subtitle: "خبيرة تجميل الأسنان",
                             imagepath: "image/17.jpg",
                           ),
-                          //),
+
                           SizedBox(width: 10),
+
                           CoustemCard(
                             id: "id1",
-                            title: "Dr.Ali Nasse",
-                            subtitle: "Brain & Nerve Specialist",
+                            title: "د. علي ناصر",
+                            subtitle: "أخصائي الدماغ والأعصاب",
                             imagepath: "image/7.jpg",
                           ),
                         ],
